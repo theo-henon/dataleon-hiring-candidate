@@ -1,0 +1,43 @@
+[project]
+name = "table-detector-backend"
+version = "1.0.0"
+description = "Little project to detect tables in images, as part of a hiring process for Dataleon."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.0",
+    "pytest>=9.0.3",
+    "ruff>=0.15.12",
+]
+
+[tool.ruff]
+# Maximum allowed line length
+line-length = 88
+
+# Target Python version used for parsing and upgrades
+target-version = "py312"
+
+[tool.ruff.lint]
+# Enable selected rule groups:
+# E  = pycodestyle errors
+# F  = pyflakes (unused imports, undefined names, etc.)
+# I  = import sorting
+# UP = pyupgrade (modern Python syntax)
+# B  = flake8-bugbear (common pitfalls)
+select = ["E", "F", "I", "UP", "B"]
+
+# Rules to disable explicitly
+ignore = []
+
+[tool.ruff.format]
+# Force double quotes for strings
+quote-style = "double"
+
+# Use spaces for indentation
+indent-style = "space"
+
+# Automatically detect line endings (LF / CRLF)
+line-ending = "auto"
