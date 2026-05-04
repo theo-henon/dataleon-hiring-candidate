@@ -4,7 +4,14 @@ version = "1.0.0"
 description = "Little project to detect tables in images, as part of a hiring process for Dataleon."
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pillow>=12.2.0",
+    "rich>=15.0.0",
+    "timm>=1.0.26",
+    "torch>=2.11.0",
+    "torchvision>=0.26.0",
+    "transformers>=5.7.0",
+]
 
 [dependency-groups]
 dev = [
@@ -15,7 +22,7 @@ dev = [
 
 [tool.ruff]
 # Maximum allowed line length
-line-length = 88
+line-length = 100
 
 # Target Python version used for parsing and upgrades
 target-version = "py312"
