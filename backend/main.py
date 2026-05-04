@@ -4,7 +4,7 @@ import sys
 import rich.traceback
 from PIL import Image
 
-from src.table_detector import TableDetector
+from src.table_detector import DetrTableDetector
 
 rich.traceback.install()
 
@@ -17,7 +17,7 @@ def main(argv: list[str]) -> None:
     image_path = argv[1]
     image = Image.open(image_path)
 
-    table_detector = TableDetector(threshold=0.75, annotate=True)
+    table_detector = DetrTableDetector(threshold=0.75, annotate=False)
     scores, labels, boxes, annotated_image = table_detector.detect_tables(image)
 
     for score, label, box in zip(scores, labels, boxes, strict=False):
