@@ -5,6 +5,7 @@ description = "Little project to detect tables in images, as part of a hiring pr
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "numpy>=2.4.4",
     "pdf2image>=1.17.0",
     "pillow>=12.2.0",
     "rich>=15.0.0",
