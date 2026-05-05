@@ -65,3 +65,37 @@ def test_thick_edges_big(table_detector: DetrTableDetector, baseline_data_path: 
 
     # Check bounding boxes with a tolerance of 10 pixels
     validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=10)
+
+
+def test_thick_edges_medium(table_detector: DetrTableDetector, baseline_data_path: str):
+    template_name = "FATURA_Template1_Instance4_thick-edges-medium"
+    template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
+    template_annotation_path = os.path.join(baseline_data_path, f"{template_name}.json")
+
+    results_list = table_detector.detect_tables(template_img_path)
+    annotation = json.load(open(template_annotation_path))
+    expected_tables = annotation["TABLE"]
+
+    # Check results list length (should match number of pages/images)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, _ = results_list[0]
+
+    # Check bounding boxes with a tolerance of 10 pixels
+    validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=10)
+
+
+def test_thick_edges_small(table_detector: DetrTableDetector, baseline_data_path: str):
+    template_name = "FATURA_Template1_Instance2_thick-edges-small"
+    template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
+    template_annotation_path = os.path.join(baseline_data_path, f"{template_name}.json")
+
+    results_list = table_detector.detect_tables(template_img_path)
+    annotation = json.load(open(template_annotation_path))
+    expected_tables = annotation["TABLE"]
+
+    # Check results list length (should match number of pages/images)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, _ = results_list[0]
+
+    # Check bounding boxes with a tolerance of 10 pixels
+    validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=10)
