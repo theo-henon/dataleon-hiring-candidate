@@ -1,5 +1,8 @@
+import os
+
 import rich.traceback
 import torch
+from pdf2image import convert_from_path
 from PIL import Image, ImageDraw
 from transformers import BatchFeature, DetrForObjectDetection, DetrImageProcessor
 
@@ -48,14 +51,34 @@ class DetrTableDetector:
             )
         return image
 
-    def detect_tables(self, image: Image):
-        inputs = self.__preprocess_image(image)
-        outputs = self.model(**inputs)
-        results = self.__postprocess_outputs(outputs, image)
-
-        if self.annotate:
-            image = self.__annotate_image(
-                image, results["scores"], results["labels"], results["boxes"]
-            )
-
-        return results["scores"], results["labels"], results["boxes"], image
+    def detect_tables(self, image_path: str) -> list:
+        """
+        Detect tables in an image or PDF file.
+        Args:
+            image_path (str): Path to an image file or PDF file.
+        Returns:
+            List of (scores, labels, boxes, image) for each image or PDF page.
+        """
+        ext = os.path.splitext(image_path)[1].lower()
+        results = []
+        if ext == ".pdf":
+            # Convert PDF pages to images
+            pages = convert_from_path(image_path)
+            for page in pages:
+                inputs = self.__preprocess_image(page)
+                outputs = self.model(**inputs)
+                res = self.__postprocess_outputs(outputs, page)
+                img = page
+                if self.annotate:
+                    img = self.__annotate_image(img, res["scores"], res["labels"], res["boxes"])
+                results.append((res["scores"], res["labels"], res["boxes"], img))
+        else:
+            image = Image.open(image_path).convert("RGB")
+            inputs = self.__preprocess_image(image)
+            outputs = self.model(**inputs)
+            res = self.__postprocess_outputs(outputs, image)
+            img = image
+            if self.annotate:
+                img = self.__annotate_image(img, res["scores"], res["labels"], res["boxes"])
+            results.append((res["scores"], res["labels"], res["boxes"], img))
+        return results
