@@ -4,6 +4,7 @@ import sys
 
 import numpy as np
 import pytest
+from PIL import Image
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
@@ -17,7 +18,7 @@ def baseline_data_path() -> str:
 
 @pytest.fixture
 def table_detector() -> DetrTableDetector:
-    return DetrTableDetector(threshold=0.75, annotate=False)
+    return DetrTableDetector(threshold=0.8, annotate=True)
 
 
 def validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=10):
@@ -50,6 +51,14 @@ def validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=
         ), f"Table {i}: Expected box {expected_box}, but detected {detected_box}."
 
 
+def save_annotated_image(baseline_data_path: str, template_name: str, annotated_image: Image):
+    output_dir = os.path.join(baseline_data_path, "annotated")
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, f"{template_name}_annotated.jpg")
+    annotated_image.save(output_path)
+    print(f"Annotated image saved to {output_path}")
+
+
 def test_thick_edges_big(table_detector: DetrTableDetector, baseline_data_path: str):
     template_name = "FATURA_Template1_Instance0_thick-edges-big"
     template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
@@ -61,7 +70,10 @@ def test_thick_edges_big(table_detector: DetrTableDetector, baseline_data_path: 
 
     # Check results list length (should match number of pages/images)
     assert len(results_list) == 1
-    detected_scores, _, detected_boxes, _ = results_list[0]
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+
+    # Save annotated image for visual inspection
+    save_annotated_image(baseline_data_path, template_name, annotated_img)
 
     # Check bounding boxes with a tolerance of 10 pixels
     validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=10)
@@ -78,7 +90,10 @@ def test_thick_edges_medium(table_detector: DetrTableDetector, baseline_data_pat
 
     # Check results list length (should match number of pages/images)
     assert len(results_list) == 1
-    detected_scores, _, detected_boxes, _ = results_list[0]
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+
+    # Save annotated image for visual inspection
+    save_annotated_image(baseline_data_path, template_name, annotated_img)
 
     # Check bounding boxes with a tolerance of 10 pixels
     validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=10)
@@ -95,7 +110,10 @@ def test_thick_edges_small(table_detector: DetrTableDetector, baseline_data_path
 
     # Check results list length (should match number of pages/images)
     assert len(results_list) == 1
-    detected_scores, _, detected_boxes, _ = results_list[0]
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+
+    # Save annotated image for visual inspection
+    save_annotated_image(baseline_data_path, template_name, annotated_img)
 
     # Check bounding boxes with a tolerance of 10 pixels
     validate_tables(expected_tables, detected_scores, detected_boxes, tolerance=10)
