@@ -12,13 +12,13 @@ from table_detector import DetrTableDetector
 
 
 @pytest.fixture
-def baseline_data_path() -> str:
-    return os.path.join(os.path.dirname(__file__), "data", "baseline")
+def table_detector() -> DetrTableDetector:
+    return DetrTableDetector(threshold=0.8, annotate=True)
 
 
 @pytest.fixture
-def table_detector() -> DetrTableDetector:
-    return DetrTableDetector(threshold=0.8, annotate=True)
+def baseline_data_path() -> str:
+    return os.path.join(os.path.dirname(__file__), "data", "baseline")
 
 
 def validate_tables(
@@ -138,6 +138,60 @@ def test_thick_edges_medium(table_detector: DetrTableDetector, baseline_data_pat
 
 def test_thick_edges_small(table_detector: DetrTableDetector, baseline_data_path: str):
     template_name = "FATURA_Template1_Instance2_thick-edges-small"
+    template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
+    results_list = table_detector.detect_tables(template_img_path)
+
+    expected_tables = load_ground_truth(baseline_data_path, template_name)
+
+    # Check results list length (should match number of pages/images)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+
+    # Save annotated image for visual inspection
+    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
+
+    # Check bounding boxes with a tolerance of 10 pixels
+    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+
+
+def test_clear_edges_big(table_detector: DetrTableDetector, baseline_data_path: str):
+    template_name = "FATURA_Template2_Instance2_clear-edges-big"
+    template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
+    results_list = table_detector.detect_tables(template_img_path)
+
+    expected_tables = load_ground_truth(baseline_data_path, template_name)
+
+    # Check results list length (should match number of pages/images)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+
+    # Save annotated image for visual inspection
+    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
+
+    # Check bounding boxes with a tolerance of 10 pixels
+    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+
+
+def test_clear_edges_medium(table_detector: DetrTableDetector, baseline_data_path: str):
+    template_name = "FATURA_Template2_Instance0_clear-edges-medium"
+    template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
+    results_list = table_detector.detect_tables(template_img_path)
+
+    expected_tables = load_ground_truth(baseline_data_path, template_name)
+
+    # Check results list length (should match number of pages/images)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+
+    # Save annotated image for visual inspection
+    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
+
+    # Check bounding boxes with a tolerance of 10 pixels
+    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+
+
+def test_clear_edges_small(table_detector: DetrTableDetector, baseline_data_path: str):
+    template_name = "FATURA_Template2_Instance12_clear-edges-small"
     template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
     results_list = table_detector.detect_tables(template_img_path)
 
