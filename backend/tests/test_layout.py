@@ -107,3 +107,39 @@ def test_borderless(table_detector, layout_data_path, size, template_name):
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
     save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
     validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+
+
+@pytest.mark.parametrize(
+    "size,template_name",
+    [
+        ("big", "FATURA_Template11_Instance131_borderless-with-header-big"),
+        ("medium", "FATURA_Template11_Instance130_borderless-with-header-medium"),
+        ("small", "FATURA_Template11_Instance129_borderless-with-header-small"),
+    ],
+)
+def test_borderless_with_header(table_detector, layout_data_path, size, template_name):
+    template_img_path = os.path.join(layout_data_path, f"{template_name}.jpg")
+    results_list = table_detector.detect_tables(template_img_path)
+    expected_tables = load_ground_truth(layout_data_path, template_name)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
+    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+
+
+@pytest.mark.parametrize(
+    "size,template_name",
+    [
+        ("big", "FATURA_Template13_Instance33_large-font-big"),
+        ("medium", "FATURA_Template13_Instance32_large-font-medium"),
+        ("small", "FATURA_Template13_Instance31_large-font-small"),
+    ],
+)
+def test_large_font(table_detector, layout_data_path, size, template_name):
+    template_img_path = os.path.join(layout_data_path, f"{template_name}.jpg")
+    results_list = table_detector.detect_tables(template_img_path)
+    expected_tables = load_ground_truth(layout_data_path, template_name)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
+    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
