@@ -21,11 +21,37 @@ This repository uses [uv](https://github.com/astral-sh/uv) for dependency manage
 		 uv run pytest
 		 ```
 
+	 **Note:** Some tests are currently failing. See below for details.
+
 4. **Build the documentation:**
 	 - Documentation is generated using [pdoc](https://pdoc.dev/):
 		 ```sh
 		 uv run pdoc -o docs src/
 		 ```
+
+---
+
+## Test Status & Known Issues
+
+
+**Latest test run summary:**
+
+- In several cases, the number of detected tables does not match the expected number (either too many, too few, or none detected). This is common for:
+  - Thick-edged tables (extra boxes detected)
+  - Multiple tables with headers (extra boxes detected)
+  - Small/borderless/with-header templates (no tables detected)
+
+- For some borderless, centered, or multipage tables, the detected bounding boxes do not sufficiently overlap (IoU below 0.5) with the expected ones, causing failures even when a table is detected.
+
+- Rotated and compressed tables are not robustly detected:
+  - Rotated tables: detected box is far from the expected region (very low IoU)
+  - Compressed tables: extra boxes detected
+
+- Multipage table detection sometimes produces boxes in the wrong region or with poor overlap.
+
+**Summary:**
+- The model struggles with borderless, rotated, compressed, and multipage tables, as well as with templates that differ from the main training distribution.
+- Assertion errors are mostly due to mismatched counts or low overlap (IoU) between detected and expected boxes.
 
 ---
 
