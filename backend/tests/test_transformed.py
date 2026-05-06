@@ -43,7 +43,7 @@ def test_blurry(table_detector, transformed_data_path):
     ],
 )
 def test_rotated(table_detector, transformed_data_path, template_name):
-    """Test the rotated image detection. (Applied 90 degrees rotation)"""
+    """Test the rotated image detection"""
     template_img_path = os.path.join(transformed_data_path, f"{template_name}.jpg")
     results_list = table_detector.detect_tables(template_img_path)
     expected_tables = load_ground_truth(transformed_data_path, template_name)
@@ -61,7 +61,7 @@ def test_rotated(table_detector, transformed_data_path, template_name):
     ],
 )
 def test_mirrored(table_detector, transformed_data_path, template_name):
-    """Test the mirrored image detection. (Applied horizontal mirroring)"""
+    """Test the mirrored image detection."""
     template_img_path = os.path.join(transformed_data_path, f"{template_name}.jpg")
     results_list = table_detector.detect_tables(template_img_path)
     expected_tables = load_ground_truth(transformed_data_path, template_name)
@@ -72,7 +72,7 @@ def test_mirrored(table_detector, transformed_data_path, template_name):
 
 
 def test_shadow(table_detector, transformed_data_path):
-    """Test the shadow image detection. (Applied shadow effect)"""
+    """Test the shadow image detection."""
     template_name = "FATURA_Template24_Instance156_shadow"
     template_img_path = os.path.join(transformed_data_path, f"{template_name}.jpg")
     results_list = table_detector.detect_tables(template_img_path)
