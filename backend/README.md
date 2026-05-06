@@ -1,5 +1,16 @@
 # Table Detector Backend
 
+## General requirements
+
+**PDF Support Notice:**
+This project uses the `pdf2image` Python package to process PDF files. `pdf2image` requires the [Poppler](https://poppler.freedesktop.org/) library to be installed on your system (providing tools like `pdftocairo` and `pdfinfo`).
+
+**To install Poppler on Linux (Debian/Ubuntu):**
+```sh
+sudo apt-get update && sudo apt-get install -y poppler-utils
+```
+For other platforms, see the [Poppler installation instructions](https://github.com/Belval/pdf2image#installing-poppler).
+
 ## For Developers
 
 This repository uses [uv](https://github.com/astral-sh/uv) for dependency management and Python environment handling. Please ensure you have `uv` installed before proceeding.
