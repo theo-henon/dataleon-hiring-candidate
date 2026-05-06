@@ -19,7 +19,7 @@ def parse_cli() -> argparse.Namespace:
         "--annotate",
         action="store_true",
         help="Whether to annotate the image with detections",
-        default=True,
+        default=False,
     )
     parser.add_argument(
         "--pretrained_model",
