@@ -33,8 +33,8 @@ def test_titles_in_bold(table_detector, layout_data_path, size, template_name):
     expected_tables = load_ground_truth(layout_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 @pytest.mark.parametrize(
@@ -51,8 +51,8 @@ def test_centered_text(table_detector, layout_data_path, size, template_name):
     expected_tables = load_ground_truth(layout_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 @pytest.mark.parametrize(
@@ -69,8 +69,8 @@ def test_titles_in_green(table_detector, layout_data_path, size, template_name):
     expected_tables = load_ground_truth(layout_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 @pytest.mark.parametrize(
@@ -87,8 +87,8 @@ def test_upper_table(table_detector, layout_data_path, size, template_name):
     expected_tables = load_ground_truth(layout_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 @pytest.mark.parametrize(
@@ -105,8 +105,8 @@ def test_borderless(table_detector, layout_data_path, size, template_name):
     expected_tables = load_ground_truth(layout_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 @pytest.mark.parametrize(
@@ -123,8 +123,8 @@ def test_borderless_with_header(table_detector, layout_data_path, size, template
     expected_tables = load_ground_truth(layout_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 @pytest.mark.parametrize(
@@ -141,5 +141,18 @@ def test_large_font(table_detector, layout_data_path, size, template_name):
     expected_tables = load_ground_truth(layout_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(layout_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
+
+
+def test_multipage_table(table_detector, layout_data_path):
+    template_name = "TableBank_wiczenia-2015-2016-f_5-6_multipage-table"
+    template_img_path = os.path.join(layout_data_path, f"{template_name}.pdf")
+    results_list = table_detector.detect_tables(template_img_path)
+    expected_tables = load_ground_truth(layout_data_path, template_name)
+    assert len(results_list) == 2
+    for i, (detected_scores, _, detected_boxes, annotated_img) in enumerate(results_list):
+        save_annotated_image(
+            layout_data_path, f"{template_name}_page{i + 1}", annotated_img, expected_tables[i]
+        )
+        validate_tables(expected_tables[i], detected_scores.tolist(), detected_boxes.tolist())

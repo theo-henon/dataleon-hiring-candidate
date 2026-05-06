@@ -34,8 +34,8 @@ def test_thick_edges(table_detector, baseline_data_path, size, template_name):
     expected_tables = load_ground_truth(baseline_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 @pytest.mark.parametrize(
@@ -52,8 +52,8 @@ def test_clear_edges(table_detector, baseline_data_path, size, template_name):
     expected_tables = load_ground_truth(baseline_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
 
 
 def test_multiple_with_header(table_detector, baseline_data_path):
@@ -63,5 +63,5 @@ def test_multiple_with_header(table_detector, baseline_data_path):
     expected_tables = load_ground_truth(baseline_data_path, template_name)
     assert len(results_list) == 1
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
-    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
-    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables[0])
+    validate_tables(expected_tables[0], detected_scores.tolist(), detected_boxes.tolist())
