@@ -54,3 +54,14 @@ def test_clear_edges(table_detector, baseline_data_path, size, template_name):
     detected_scores, _, detected_boxes, annotated_img = results_list[0]
     save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
     validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
+
+
+def test_multiple_with_header(table_detector, baseline_data_path):
+    template_name = "TableBank_%5BMS-OAPXBC%5D-170613_35_multiple-with-header"
+    template_img_path = os.path.join(baseline_data_path, f"{template_name}.jpg")
+    results_list = table_detector.detect_tables(template_img_path)
+    expected_tables = load_ground_truth(baseline_data_path, template_name)
+    assert len(results_list) == 1
+    detected_scores, _, detected_boxes, annotated_img = results_list[0]
+    save_annotated_image(baseline_data_path, template_name, annotated_img, expected_tables)
+    validate_tables(expected_tables, detected_scores.tolist(), detected_boxes.tolist())
