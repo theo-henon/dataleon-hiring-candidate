@@ -33,6 +33,13 @@ This repository uses [uv](https://github.com/astral-sh/uv) for dependency manage
 		 ```
 
 	 **Note:** Some tests are currently failing. See below for details.
+	 
+4. **Generate a coverage report:**
+	 - Run:
+		 ```sh
+		 uv run pytest --cov=src --cov-report=html
+		 ```
+	 - The coverage report will be generated in the `htmlcov/` directory. Open `htmlcov/index.html` in a browser to view detailed coverage information.
 
 4. **Build the documentation:**
 	 - Documentation is generated using [pdoc](https://pdoc.dev/):
